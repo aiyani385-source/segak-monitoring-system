@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* ================= FILTER ================= */
+.filter-section{
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    margin-bottom:30px;
+}
+
+.filter-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+select{
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #cbd5e1;
+}
+
+/* ================= ACTION BAR ================= */
+.action-bar{
+    text-align:right;
+    margin-bottom:20px;
+}
+
+.print-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 22px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 6px 15px rgba(37,99,235,0.35);
+}
+
+.print-btn:hover{
+    background:#1d4ed8;
+}
+
+/* ================= CERTIFICATE ================= */
+.certificate{
+    width:210mm;
+    min-height:297mm;
+    margin:0 auto;
+    padding:25mm;
+    background:white;
+    border-radius:18px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.15);
+    position:relative;
+}
+
+/* HEADER */
+.cert-header{
+    text-align:center;
+    margin-bottom:20mm;
+}
+
+.school-name{
+    font-size:24px;
+    font-weight:800;
+}
+
+.cert-title{
+    margin-top:6px;
+    font-size:15px;
+    color:#475569;
+}
+
+/* STUDENT */
+.student-info{
+    margin-bottom:16mm;
+}
+
+.student-name{
+    font-size:26px;
+    font-weight:700;
+}
+
+/* SECTION */
+.section-title{
+    margin:14mm 0 6mm;
+    font-weight:700;
+    font-size:15px;
+    border-bottom:2px solid #0f172a;
+    padding-bottom:4px;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td{
+    border:1px solid #000;
+    padding:8px;
+    text-align:center;
+    font-size:13px;
+}
+
+th{
+    background:#f1f5f9;
+}
+
+/* SIGNATURE */
+.signature{
+    position:absolute;
+    bottom:25mm;
+    left:25mm;
+    right:25mm;
+    display:flex;
+    justify-content:space-between;
+}
+
+.sign-box{
+    width:220px;
+    text-align:center;
+    font-size:14px;
+}
+
+.sign-line{
+    border-top:1.5px solid #000;
+    margin-bottom:6px;
+}
+
+/* ================= PRINT ================= */
+@media print{
+    @page{
+        size:A4 portrait;
+        margin:0;
+    }
+
+    .sidebar,
+    .filter-section,
+    .action-bar{
+        display:none !important;
+    }
+
+    body{
+        margin:0;
+        background:white;
+    }
+
+    .certificate{
+        box-shadow:none;
+        border-radius:0;
+    }
+}
+</style>
+
+<!-- ================= FILTER ================= -->
+<div class="filter-section">
+<form method="get">
+    <div class="filter-grid">
+
+        <div class="form-group">
+            <label>Class</label>
+            <select name="class" onchange="this.form.submit()">
+                <option value="">Select Class</option>
+                {% for c in classes %}
+                <option value="{{ c.class_name }}"
+                    {% if selected_class == c.class_name %}selected{% endif %}>
+                    {{ c.class_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Student</label>
+            <select name="student" onchange="this.form.submit()"
+                {% if not students %}disabled{% endif %}>
+                <option value="">Select Student</option>
+                {% for s in students %}
+                <option value="{{ s.student_id }}"
+                    {% if selected_student == s.student_id|string %}selected{% endif %}>
+                    {{ s.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </div>
+</form>
+</div>
+
+{% if student_info %}
+
+<!-- ================= ACTION BAR ================= -->
+<div class="action-bar">
+    <button class="print-btn" onclick="window.print()">Print Report</button>
+</div>
+
+<!-- ================= CERTIFICATE ================= -->
+<div class="certificate">
+
+    <div class="cert-header">
+        <div class="school-name">SEKOLAH MENENGAH KEBANGSAAN SERI DAMAI</div>
+        <div class="cert-title">PHYSICAL FITNESS REPORT</div>
+    </div>
+
+    <div class="student-info">
+        <div class="student-name">{{ student_info.name }}</div>
+        <div>Class: {{ student_info.class }}</div>
+    </div>
+
+    <div class="section-title">BMI ASSESSMENT</div>
+    <table>
+        <tr>
+            <th>Height (m)</th>
+            <th>Weight (kg)</th>
+            <th>BMI</th>
+            <th>Status</th>
+        </tr>
+        {% for b in bmi_results %}
+        <tr>
+            <td>{{ b.height }}</td>
+            <td>{{ b.weight }}</td>
+            <td>{{ b.bmi_value }}</td>
+            <td>{{ b.bmi_status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="section-title">SEGAK ASSESSMENT</div>
+    <table>
+        <tr>
+            <th>Step Test</th>
+            <th>Push Up</th>
+            <th>Sit Up</th>
+            <th>Sit & Reach</th>
+            <th>Fitness Level</th>
+        </tr>
+        {% for r in segak_results %}
+        <tr>
+            <td>{{ r.step_test }}</td>
+            <td>{{ r.push_up }}</td>
+            <td>{{ r.sit_up }}</td>
+            <td>{{ r.sit_reach }}</td>
+            <td>{{ r.fitness_level }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="signature">
+        <div class="sign-box">
+            <div class="sign-line"></div>
+            Teacher
+        </div>
+        <div class="sign-box">
+            <div class="sign-line"></div>
+            School Stamp
+        </div>
+    </div>
+
+</div>
+{% endif %}
+
+{% endblock %}

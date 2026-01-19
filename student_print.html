@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* ===== PAGE BACKGROUND ===== */
+.print-page{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:35px 40px;
+    border-radius:18px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.15);
+}
+
+/* ===== HEADER ===== */
+.report-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:2px solid #e5e7eb;
+    padding-bottom:20px;
+    margin-bottom:30px;
+}
+
+.report-title h2{
+    margin:0;
+    font-size:26px;
+    color:#0f172a;
+}
+
+.report-title p{
+    margin-top:6px;
+    color:#6b7280;
+    font-size:14px;
+}
+
+/* ===== PRINT BUTTON ===== */
+.print-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 22px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 6px 15px rgba(37,99,235,0.4);
+}
+
+.print-btn:hover{
+    background:#1d4ed8;
+}
+
+/* ===== SECTION ===== */
+.section{
+    margin-bottom:35px;
+}
+
+.section h3{
+    margin-bottom:14px;
+    padding-bottom:6px;
+    border-bottom:2px solid #0f172a;
+}
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+    font-size:15px;
+}
+
+.label{
+    font-weight:600;
+    width:30%;
+    color:#374151;
+}
+
+/* ===== BADGE ===== */
+.badge{
+    padding:6px 16px;
+    border-radius:20px;
+    font-weight:700;
+    font-size:14px;
+    display:inline-block;
+}
+
+.good,.normal,.excellent{
+    background:#dcfce7;
+    color:#166534;
+}
+.average,.overweight{
+    background:#fef9c3;
+    color:#854d0e;
+}
+.poor,.obese,.underweight{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* ===== SIGNATURE ===== */
+.signature-section{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:40px;
+    margin-top:50px;
+}
+
+.signature-box{
+    text-align:center;
+    font-size:14px;
+}
+
+.signature-line{
+    border-bottom:1.5px solid #111827;
+    height:30px;
+    margin-bottom:6px;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    text-align:center;
+    font-size:13px;
+    color:#6b7280;
+    margin-top:45px;
+    border-top:1px dashed #e5e7eb;
+    padding-top:15px;
+}
+
+/* ===== PRINT MODE ===== */
+@media print{
+    .sidebar,
+    .print-btn{
+        display:none !important;
+    }
+    .main-content{
+        padding:0;
+    }
+    .print-page{
+        box-shadow:none;
+        border-radius:0;
+        max-width:100%;
+    }
+}
+</style>
+
+<div class="print-page">
+
+    <!-- ===== HEADER ===== -->
+    <div class="report-header">
+        <div class="report-title">
+            <h2>SEGAK & BMI Fitness Report</h2>
+            <p>Student Physical Fitness Assessment</p>
+        </div>
+        <button class="print-btn" onclick="window.print()">Print Report</button>
+    </div>
+
+    <!-- ===== PROFILE ===== -->
+    <div class="section">
+        <h3>Student Profile</h3>
+        <table>
+            <tr><td class="label">Name</td><td>{{ student.name }}</td></tr>
+            <tr><td class="label">Class</td><td>{{ student.class }}</td></tr>
+            <tr><td class="label">Gender</td><td>{{ student.gender }}</td></tr>
+            <tr><td class="label">Age</td><td>{{ student.age }}</td></tr>
+        </table>
+    </div>
+
+    <!-- ===== BMI ===== -->
+    <div class="section">
+        <h3>Latest BMI Result</h3>
+        {% if bmi %}
+        <table>
+            <tr><td class="label">Date</td><td>{{ bmi.record_date }}</td></tr>
+            <tr><td class="label">Height</td><td>{{ bmi.height }} m</td></tr>
+            <tr><td class="label">Weight</td><td>{{ bmi.weight }} kg</td></tr>
+            <tr>
+                <td class="label">BMI Status</td>
+                <td>
+                    <span class="badge {{ bmi.bmi_status|lower }}">
+                        {{ bmi.bmi_status }}
+                    </span>
+                </td>
+            </tr>
+        </table>
+        {% else %}
+            <p>No BMI record available.</p>
+        {% endif %}
+    </div>
+
+    <!-- ===== SEGAK ===== -->
+    <div class="section">
+        <h3>Latest SEGAK Result</h3>
+        {% if segak %}
+        <table>
+            <tr><td class="label">Date</td><td>{{ segak.test_date }}</td></tr>
+            <tr><td class="label">Step Test</td><td>{{ segak.step_test }}</td></tr>
+            <tr><td class="label">Push Up</td><td>{{ segak.push_up }}</td></tr>
+            <tr><td class="label">Sit Up</td><td>{{ segak.sit_up }}</td></tr>
+            <tr><td class="label">Sit & Reach</td><td>{{ segak.sit_reach }}</td></tr>
+            <tr>
+                <td class="label">Fitness Level</td>
+                <td>
+                    <span class="badge {{ segak.fitness_level|lower }}">
+                        {{ segak.fitness_level }}
+                    </span>
+                </td>
+            </tr>
+        </table>
+        {% else %}
+            <p>No SEGAK record available.</p>
+        {% endif %}
+    </div>
+
+    <!-- ===== SIGNATURE ===== -->
+    <div class="signature-section">
+        <div class="signature-box">
+            <div class="signature-line"></div>
+            Student Signature
+        </div>
+        <div class="signature-box">
+            <div class="signature-line"></div>
+            Teacher Signature
+        </div>
+        <div class="signature-box">
+            <div class="signature-line"></div>
+            Date
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        Generated by SEGAK Monitoring System • Official Student Report
+    </div>
+
+</div>
+
+{% endblock %}

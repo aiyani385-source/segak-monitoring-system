@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* ===== HERO ===== */
+.hero {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 28px 30px;
+    border-radius: 18px;
+    margin-bottom: 35px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+}
+
+.hero h2 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.hero p {
+    margin-top: 6px;
+    opacity: 0.85;
+}
+
+/* ===== INFO CARDS ===== */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 22px;
+    margin-bottom: 40px;
+}
+
+.info-card {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+.info-card h4 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.info-card p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* ===== SECTION ===== */
+.section {
+    margin-bottom: 45px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.section-title h3 {
+    margin: 0;
+}
+
+.section-title span {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ===== RECORD GRID ===== */
+.record-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap: 25px;
+}
+
+.record-card {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+    transition: transform 0.2s ease;
+}
+
+.record-card:hover {
+    transform: translateY(-4px);
+}
+
+.record-card h4 {
+    margin: 0 0 14px;
+    color: #2563eb;
+    font-size: 15px;
+}
+
+.record-item {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.record-item strong {
+    color: #0f172a;
+}
+
+/* ===== STATUS BADGE ===== */
+.badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* GOOD */
+.badge.good,
+.badge.normal,
+.badge.excellent {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* AVERAGE */
+.badge.average,
+.badge.overweight {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+/* POOR */
+.badge.poor,
+.badge.obese,
+.badge.underweight {
+    background: #fee2e2;
+    color: #991b1b;
+}
+</style>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+    <h2>Welcome, {{ student.name }} 👋</h2>
+    <p>Here’s an overview of your BMI & SEGAK performance</p>
+</div>
+
+<!-- ===== INFO ===== -->
+<div class="info-grid">
+    <div class="info-card">
+        <h4>Class</h4>
+        <p>{{ student.class }}</p>
+    </div>
+    <div class="info-card">
+        <h4>Gender</h4>
+        <p>{{ student.gender }}</p>
+    </div>
+    <div class="info-card">
+        <h4>Age</h4>
+        <p>{{ student.age }}</p>
+    </div>
+</div>
+
+<!-- ===== BMI ===== -->
+<div class="section">
+    <div class="section-title">
+        <h3>BMI Records</h3>
+        <span>Health Indicator</span>
+    </div>
+
+    <div class="record-grid">
+    {% for b in bmi_records %}
+        <div class="record-card">
+            <h4>{{ b.record_date }}</h4>
+            <div class="record-item"><strong>Height:</strong> {{ "%.2f"|format(b.height) }} m</div>
+            <div class="record-item"><strong>Weight:</strong> {{ b.weight }} kg</div>
+            <div class="record-item"><strong>BMI:</strong> {{ b.bmi_value }}</div>
+
+            <span class="badge {{ b.bmi_status|lower }}">
+                {{ b.bmi_status }}
+            </span>
+        </div>
+    {% else %}
+        <p style="color:#64748b;">No BMI records available.</p>
+    {% endfor %}
+    </div>
+</div>
+
+<!-- ===== SEGAK ===== -->
+<div class="section">
+    <div class="section-title">
+        <h3>SEGAK Records</h3>
+        <span>Fitness Assessment</span>
+    </div>
+
+    <div class="record-grid">
+    {% for s in segak_records %}
+        <div class="record-card">
+            <h4>{{ s.test_date }}</h4>
+            <div class="record-item"><strong>Step Test:</strong> {{ s.step_test }}</div>
+            <div class="record-item"><strong>Push Up:</strong> {{ s.push_up }}</div>
+            <div class="record-item"><strong>Sit Up:</strong> {{ s.sit_up }}</div>
+            <div class="record-item"><strong>Sit & Reach:</strong> {{ s.sit_reach }}</div>
+
+            <span class="badge {{ s.fitness_level|lower }}">
+                {{ s.fitness_level }}
+            </span>
+        </div>
+    {% else %}
+        <p style="color:#64748b;">No SEGAK records available.</p>
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+

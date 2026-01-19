@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Add New Student</h2>
+
+<style>
+.card {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 25px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.form-group.full {
+    grid-column: span 3;
+}
+
+.submit-btn {
+    margin-top: 30px;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.submit-btn:hover {
+    opacity: 0.95;
+}
+
+/* INFO BOX */
+.info-text {
+    margin-top: 10px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-group.full {
+        grid-column: span 1;
+    }
+}
+</style>
+
+<div class="card">
+
+<form method="POST">
+
+    <div class="form-grid">
+
+        <!-- STUDENT NAME -->
+        <div class="form-group">
+            <label>Student Name</label>
+            <input type="text" name="name" placeholder="Full student name" required>
+        </div>
+
+        <!-- GENDER -->
+        <div class="form-group">
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="">-- Select Gender --</option>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+        </div>
+
+        <!-- AGE -->
+        <div class="form-group">
+            <label>Age</label>
+            <input type="number" name="age" min="13" max="17" placeholder="e.g. 15" required>
+        </div>
+
+        <!-- CLASS -->
+        <div class="form-group full">
+            <label>Class</label>
+            <select name="class_id" required>
+                <option value="">-- Select Class --</option>
+                {% for c in classes %}
+                    <option value="{{ c.class_id }}">{{ c.class_name }}</option>
+                {% endfor %}
+            </select>
+            <div class="info-text">
+                Select the class the student is currently enrolled in.
+            </div>
+        </div>
+
+    </div>
+
+    <button type="submit" class="submit-btn">
+        Save Student
+    </button>
+
+    {% if success %}
+        <p style="color:green; margin-top:18px; font-weight:600;">
+            {{ success }}
+        </p>
+    {% endif %}
+
+</form>
+
+</div>
+
+{% endblock %}

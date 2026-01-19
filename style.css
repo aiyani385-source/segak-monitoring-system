@@ -1,0 +1,148 @@
+/* ================= GLOBAL ================= */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    background: #0f172a;
+    color: white;
+    overflow-y: auto;
+}
+
+/* LOGO */
+.sidebar-logo {
+    text-align: center;
+    padding: 20px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.sidebar-logo img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 6px;
+    margin-bottom: 8px;
+}
+
+.sidebar-logo .app-name {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+/* MENU */
+.menu-title {
+    padding: 12px 20px;
+    font-size: 12px;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.menu-btn {
+    padding: 12px 20px;
+    cursor: pointer;
+    color: #e5e7eb;
+    font-size: 14px;
+}
+
+.menu-btn:hover {
+    background: #1e293b;
+}
+
+.submenu {
+    display: none;
+    background: #020617;
+}
+
+.submenu a {
+    display: block;
+    padding: 10px 40px;
+    font-size: 13px;
+    color: #cbd5e1;
+    text-decoration: none;
+}
+
+.submenu a:hover {
+    background: #1e293b;
+}
+
+/* ================= CONTENT ================= */
+.content {
+    margin-left: 240px;
+    padding: 25px;
+}
+
+/* ================= LOGIN PAGE ================= */
+.login-box {
+    background: white;
+    padding: 30px;
+    width: 360px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.login-logo img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.login-logo h3 {
+    margin: 0;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.error {
+    margin-top: 10px;
+    color: red;
+    font-size: 13px;
+    text-align: center;
+}

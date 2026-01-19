@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Edit BMI Record</h2>
+<p style="color:#6b7280;">Update student BMI information</p>
+
+<style>
+.form-container {
+    background: #ffffff;
+    padding: 30px;
+    max-width: 650px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    margin-top: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: span 2;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1f2933;
+}
+
+input {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.button-group {
+    margin-top: 25px;
+    display: flex;
+    gap: 12px;
+}
+
+.save-btn {
+    background: #2563eb;
+    color: white;
+    padding: 10px 26px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background: #1d4ed8;
+}
+
+.cancel-btn {
+    background: #e5e7eb;
+    color: #111827;
+    padding: 10px 26px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+</style>
+
+<div class="form-container">
+
+<form method="post">
+
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label>Height (m)</label>
+            <input type="number"
+                   step="0.01"
+                   name="height"
+                   value="{{ record.height }}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Weight (kg)</label>
+            <input type="number"
+                   step="0.1"
+                   name="weight"
+                   value="{{ record.weight }}"
+                   required>
+        </div>
+
+        <div class="form-group full">
+            <label>Record Date</label>
+            <input type="date"
+                   name="record_date"
+                   value="{{ record.record_date }}"
+                   required>
+        </div>
+
+    </div>
+
+    <div class="button-group">
+        <button type="submit" class="save-btn">Save Changes</button>
+        <a href="{{ url_for('bmi_records') }}" class="cancel-btn">Cancel</a>
+    </div>
+
+</form>
+
+</div>
+
+{% endblock %}

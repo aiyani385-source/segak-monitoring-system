@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Student List</h2>
+
+<style>
+.table-container {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 20px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.filter-bar {
+    margin-bottom: 15px;
+}
+
+.filter-bar select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+    text-align: center;
+}
+
+th {
+    background: #f3f4f6;
+    font-weight: 600;
+}
+
+tr:hover {
+    background: #f9fafb;
+}
+
+.action a {
+    text-decoration: none;
+    margin: 0 6px;
+    font-weight: 600;
+}
+
+.edit {
+    color: #2563eb;
+}
+
+.delete {
+    color: #dc2626;
+}
+</style>
+
+<div class="table-container">
+
+    <!-- FILTER CLASS (MACAM LAMA) -->
+    <form method="get" class="filter-bar">
+        <label><strong>Filter by Class:</strong></label>
+        <select name="class" onchange="this.form.submit()">
+            <option value="">All Classes</option>
+            {% for c in classes %}
+                <option value="{{ c.class }}"
+                    {% if selected_class == c.class %}selected{% endif %}>
+                    {{ c.class }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- STUDENT TABLE -->
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for s in students %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td style="text-align:left;">{{ s.name }}</td>
+                <td>{{ s.class }}</td>
+                <td>{{ s.gender }}</td>
+                <td>{{ s.age }}</td>
+                <td class="action">
+                    <a class="edit"
+                       href="{{ url_for('edit_student', student_id=s.student_id) }}">
+                       ✏️ Edit
+                    </a>
+                    |
+                    <a class="delete"
+                       href="{{ url_for('delete_student', student_id=s.student_id) }}"
+                       onclick="return confirm('Delete this student?')">
+                       🗑  Delete
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No students found.</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

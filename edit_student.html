@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Edit Student</h2>
+<p style="color:#6b7280;">Update student information</p>
+
+<style>
+.form-container {
+    background: #ffffff;
+    padding: 30px;
+    max-width: 650px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    margin-top: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: span 2;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1f2933;
+}
+
+input, select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.button-group {
+    margin-top: 25px;
+    display: flex;
+    gap: 12px;
+}
+
+.save-btn {
+    background: #2563eb;
+    color: white;
+    padding: 10px 26px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background: #1d4ed8;
+}
+
+.cancel-btn {
+    background: #e5e7eb;
+    color: #111827;
+    padding: 10px 26px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+</style>
+
+<div class="form-container">
+
+<form method="post">
+
+    <div class="form-grid">
+
+        <div class="form-group full">
+            <label>Student Name</label>
+            <input type="text" name="name" value="{{ student.name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="Male" {% if student.gender=='Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if student.gender=='Female' %}selected{% endif %}>Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Age</label>
+            <input type="number" name="age" value="{{ student.age }}" required>
+        </div>
+
+        <div class="form-group full">
+            <label>Class</label>
+            <select name="class_id" required>
+                {% for c in classes %}
+                    <option value="{{ c.class_id }}"
+                        {% if c.class_id == student.class_id %}selected{% endif %}>
+                        {{ c.class_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </div>
+
+    <div class="button-group">
+        <button type="submit" class="save-btn">Save Changes</button>
+        <a href="{{ url_for('students') }}" class="cancel-btn">Cancel</a>
+    </div>
+
+</form>
+
+</div>
+
+{% endblock %}

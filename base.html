@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SEGAK Monitoring System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: #f1f5f9;
+        display: flex;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+        width: 260px;
+        background: #0f172a;
+        color: #e5e7eb;
+        height: 100vh;
+        padding: 22px 16px;
+        overflow-y: auto;
+    }
+
+    /* ===== LOGO ===== */
+    .sidebar-logo {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .sidebar-logo img {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        border-radius: 50%;
+        background: #ffffff;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    .logo-text {
+        font-size: 22px;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: 1px;
+    }
+
+    /* ===== MENU GROUP ===== */
+    .menu-group {
+        margin-bottom: 10px;
+    }
+
+    .menu-title {
+        padding: 12px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #e5e7eb;
+    }
+
+    .menu-title:hover {
+        background: #1e293b;
+    }
+
+    .menu-items {
+        display: none;
+        padding-left: 12px;
+        margin-top: 6px;
+    }
+
+    .menu-items a {
+        display: block;
+        padding: 9px 14px;
+        margin-bottom: 6px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #cbd5f5;
+        font-size: 14px;
+    }
+
+    .menu-items a:hover {
+        background: #1e293b;
+        color: #ffffff;
+    }
+
+    .menu-items.show {
+        display: block;
+    }
+
+    .arrow {
+        font-size: 12px;
+        transition: transform 0.25s ease;
+    }
+
+    .arrow.rotate {
+        transform: rotate(90deg);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+        flex: 1;
+        padding: 28px;
+        overflow-y: auto;
+        height: 100vh;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    .sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 4px;
+    }
+    </style>
+</head>
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+<div class="sidebar">
+
+    <!-- LOGO -->
+    <div class="sidebar-logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="SEGAK Logo">
+        <div class="logo-text">SEGAK MONITORING SYSTEM</div>
+    </div>
+
+    <!-- ================= TEACHER MENU ================= -->
+    {% if session.get("role") == "teacher" %}
+
+    <div class="menu-group">
+        <div class="menu-title" onclick="location.href='{{ url_for('dashboard') }}'">
+            Dashboard
+        </div>
+    </div>
+
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu(this)">
+            Students <span class="arrow">▶</span>
+        </div>
+        <div class="menu-items">
+            <a href="{{ url_for('add_student') }}">Add Student</a>
+            <a href="{{ url_for('students') }}">Student List</a>
+        </div>
+    </div>
+
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu(this)">
+            BMI <span class="arrow">▶</span>
+        </div>
+        <div class="menu-items">
+            <a href="{{ url_for('add_bmi') }}">Add BMI</a>
+            <a href="{{ url_for('bmi_records') }}">BMI Records</a>
+        </div>
+    </div>
+
+    <div class="menu-group">
+        <div class="menu-title" onclick="toggleMenu(this)">
+            SEGAK <span class="arrow">▶</span>
+        </div>
+        <div class="menu-items">
+            <a href="{{ url_for('add_segak') }}">Add SEGAK</a>
+            <a href="{{ url_for('segak_records') }}">SEGAK Records</a>
+        </div>
+    </div>
+
+    <div class="menu-group">
+        <div class="menu-title" onclick="location.href='{{ url_for('results') }}'">
+            Results
+        </div>
+    </div>
+
+    {% endif %}
+
+    <!-- ================= STUDENT MENU ================= -->
+    {% if session.get("role") == "student" %}
+
+<div class="menu-group">
+    <div class="menu-title" onclick="location.href='{{ url_for('student_dashboard') }}'">
+        My Dashboard
+    </div>
+</div>
+
+<div class="menu-group">
+    <div class="menu-title" onclick="location.href='{{ url_for('student_print') }}'">
+        Print Result
+    </div>
+</div>
+
+{% endif %}
+
+    
+
+    <!-- ================= LOGOUT ================= -->
+    <div class="menu-group">
+        <div class="menu-title" onclick="location.href='{{ url_for('logout') }}'">
+            Logout
+        </div>
+    </div>
+
+</div>
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="main-content">
+    {% block content %}{% endblock %}
+</div>
+
+<script>
+function toggleMenu(el) {
+    const items = el.nextElementSibling;
+    const arrow = el.querySelector(".arrow");
+
+    items.classList.toggle("show");
+    arrow.classList.toggle("rotate");
+}
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Add SEGAK Record</h2>
+
+<style>
+.card {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 25px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.form-group.full {
+    grid-column: span 3;
+}
+
+.info-box {
+    background: #f9fafb;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    font-size: 15px;
+}
+
+.submit-btn {
+    margin-top: 30px;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.submit-btn:hover {
+    opacity: 0.95;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-group.full {
+        grid-column: span 1;
+    }
+}
+</style>
+
+<div class="card">
+
+<form method="POST">
+
+    <!-- ================= SELECT CLASS ================= -->
+    <div class="form-grid">
+
+        <div class="form-group full">
+            <label>Select Class</label>
+            <select id="classSelect" onchange="filterStudents()" required>
+                <option value="">-- Select Class --</option>
+                {% for c in classes %}
+                    <option value="{{ c.class }}">{{ c.class }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group full">
+            <label>Select Student</label>
+            <select name="student_id" id="studentSelect" onchange="showStudentInfo()" required>
+                <option value="">-- Select Student --</option>
+                {% for s in students %}
+                    <option value="{{ s.student_id }}"
+                            data-name="{{ s.name }}"
+                            data-gender="{{ s.gender }}"
+                            data-class="{{ s.class }}">
+                        {{ s.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </div>
+
+    <!-- ================= STUDENT INFO ================= -->
+    <div class="form-grid" id="studentInfo" style="display:none; margin-top:20px;">
+        <div class="form-group">
+            <label>Name</label>
+            <div class="info-box" id="infoName"></div>
+        </div>
+        <div class="form-group">
+            <label>Gender</label>
+            <div class="info-box" id="infoGender"></div>
+        </div>
+        <div class="form-group">
+            <label>Class</label>
+            <div class="info-box" id="infoClass"></div>
+        </div>
+    </div>
+
+    <!-- ================= SEGAK INPUT ================= -->
+    <div class="form-grid" style="margin-top:30px;">
+
+        <div class="form-group">
+            <label>Step Test (3 min)</label>
+            <input type="number" name="step_test" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label>Push Up</label>
+            <input type="number" name="push_up" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label>Sit Up</label>
+            <input type="number" name="sit_up" min="0" required>
+        </div>
+
+        <div class="form-group full">
+            <label>Sit & Reach (cm)</label>
+            <input type="number" step="0.1" name="sit_reach" required>
+        </div>
+
+        <div class="form-group full">
+            <label>Test Date</label>
+            <input type="date" name="test_date" required>
+        </div>
+
+    </div>
+
+    <button type="submit" class="submit-btn">
+        Save SEGAK Record
+    </button>
+
+</form>
+
+</div>
+
+<script>
+function filterStudents() {
+    let selectedClass = document.getElementById("classSelect").value;
+    let studentSelect = document.getElementById("studentSelect");
+    let options = studentSelect.options;
+
+    studentSelect.value = "";
+    document.getElementById("studentInfo").style.display = "none";
+
+    for (let i = 1; i < options.length; i++) {
+        let opt = options[i];
+        opt.style.display = (opt.dataset.class === selectedClass) ? "" : "none";
+    }
+}
+
+function showStudentInfo() {
+    let select = document.getElementById("studentSelect");
+    let opt = select.options[select.selectedIndex];
+    if (!opt.value) return;
+
+    document.getElementById("studentInfo").style.display = "grid";
+    document.getElementById("infoName").innerText = opt.dataset.name;
+    document.getElementById("infoGender").innerText = opt.dataset.gender;
+    document.getElementById("infoClass").innerText = opt.dataset.class;
+}
+</script>
+
+{% endblock %}

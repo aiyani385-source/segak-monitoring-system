@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ===== WELCOME SECTION (TAMBAH SAHAJA) ===== -->
+<div style="
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 26px 30px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 12px 26px rgba(0,0,0,0.25);
+">
+    <h2 style="margin:0;">Welcome, {{ teacher_name }} 👋</h2>
+    <p style="margin-top:8px; font-size:14px; opacity:0.85;">
+        SEGAK Physical Fitness Monitoring System
+    </p>
+</div>
+
+<h2 style="margin-bottom:10px;">Dashboard</h2>
+<p style="color:#6b7280;">SEGAK Physical Fitness Monitoring System</p>
+
+<style>
+/* ===== DASHBOARD GRID ===== */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-top: 25px;
+}
+
+/* ===== STAT CARDS ===== */
+.stat-card {
+    padding: 24px;
+    border-radius: 18px;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+}
+
+.stat-card::after {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+}
+
+.stat-card h3 {
+    font-size: 34px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.stat-card p {
+    margin-top: 6px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* CARD COLORS */
+.bg-blue {
+    background: linear-gradient(135deg, #2563eb, #1e3a8a);
+}
+.bg-green {
+    background: linear-gradient(135deg, #16a34a, #065f46);
+}
+.bg-purple {
+    background: linear-gradient(135deg, #7c3aed, #4c1d95);
+}
+.bg-orange {
+    background: linear-gradient(135deg, #ea580c, #9a3412);
+}
+
+/* ===== QUICK ACTIONS ===== */
+.quick-actions {
+    margin-top: 45px;
+}
+
+.quick-actions h3 {
+    margin-bottom: 18px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.action-card {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 30px rgba(0,0,0,0.15);
+}
+
+.action-icon {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.action-card a {
+    text-decoration: none;
+    color: #111827;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1000px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<!-- ================= SUMMARY STAT CARDS ================= -->
+<div class="dashboard-grid">
+
+    <div class="stat-card bg-blue">
+        <h3>{{ total_students }}</h3>
+        <p>Total Students</p>
+    </div>
+
+    <div class="stat-card bg-green">
+        <h3>{{ total_bmi }}</h3>
+        <p>BMI Records</p>
+    </div>
+
+    <div class="stat-card bg-purple">
+        <h3>{{ total_segak }}</h3>
+        <p>SEGAK Tests</p>
+    </div>
+
+    <div class="stat-card bg-orange">
+        <h3>{{ total_classes }}</h3>
+        <p>Total Classes</p>
+    </div>
+
+</div>
+
+<!-- ================= QUICK ACTIONS ================= -->
+<div class="quick-actions">
+
+    <h3>Quick Actions</h3>
+
+    <div class="action-grid">
+
+        <div class="action-card">
+            <div class="action-icon">➕</div>
+            <a href="{{ url_for('add_student') }}">Add Student</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">⚖️</div>
+            <a href="{{ url_for('add_bmi') }}">Add BMI Record</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">🏃</div>
+            <a href="{{ url_for('add_segak') }}">Add SEGAK Test</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">📋</div>
+            <a href="{{ url_for('students') }}">Student List</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">📊</div>
+            <a href="{{ url_for('bmi_records') }}">BMI Records</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">📑</div>
+            <a href="{{ url_for('segak_records') }}">SEGAK Records</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+

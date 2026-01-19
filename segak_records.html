@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>SEGAK Records</h2>
+<p style="color:#6b7280;">Student physical fitness assessment records</p>
+
+<style>
+.table-container {
+    background:#ffffff;
+    padding:25px;
+    border-radius:12px;
+    margin-top:20px;
+    box-shadow:0 6px 14px rgba(0,0,0,0.08);
+}
+
+.filter-bar {
+    margin-bottom:15px;
+}
+
+.filter-bar select {
+    padding:8px 12px;
+    border-radius:6px;
+    border:1px solid #d1d5db;
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td {
+    padding:10px 12px;
+    border-bottom:1px solid #e5e7eb;
+    font-size:14px;
+    text-align:center;
+}
+
+th {
+    background:#f3f4f6;
+    font-weight:600;
+}
+
+tr:hover {
+    background:#f9fafb;
+}
+
+.action a {
+    text-decoration:none;
+    margin:0 6px;
+    font-weight:600;
+}
+
+.edit { color:#2563eb; }
+.delete { color:#dc2626; }
+
+.level-Excellent { color:#16a34a; font-weight:600; }
+.level-Good { color:#2563eb; font-weight:600; }
+.level-Average { color:#ca8a04; font-weight:600; }
+.level-Poor { color:#dc2626; font-weight:600; }
+</style>
+
+<div class="table-container">
+
+    <!-- FILTER CLASS -->
+    <form method="get" class="filter-bar">
+        <label><strong>Filter by Class:</strong></label>
+        <select name="class" onchange="this.form.submit()">
+            <option value="">All Classes</option>
+            {% for c in classes %}
+                <option value="{{ c.class_name }}"
+                    {% if selected_class == c.class_name %}selected{% endif %}>
+                    {{ c.class_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- TABLE -->
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Step Test</th>
+                <th>Push Up</th>
+                <th>Sit Up</th>
+                <th>Sit & Reach</th>
+                <th>Fitness Level</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in records %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td style="text-align:left;">{{ r.name }}</td>
+                <td>{{ r.class }}</td>
+                <td>{{ r.step_test }}</td>
+                <td>{{ r.push_up }}</td>
+                <td>{{ r.sit_up }}</td>
+                <td>{{ r.sit_reach }}</td>
+                <td class="level-{{ r.fitness_level }}">{{ r.fitness_level }}</td>
+                <td>{{ r.test_date }}</td>
+                <td class="action">
+                    <a class="edit"
+                       href="{{ url_for('edit_segak', segak_id=r.segak_id) }}">✏️ Edit</a>
+                    |
+                    <a class="delete"
+                       href="{{ url_for('delete_segak', segak_id=r.segak_id) }}"
+                       onclick="return confirm('Delete SEGAK record?')">🗑️ Delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">No SEGAK records found.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

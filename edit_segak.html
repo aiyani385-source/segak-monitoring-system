@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Edit SEGAK Record</h2>
+
+<style>
+.form-box {
+    background:#ffffff;
+    padding:30px;
+    border-radius:12px;
+    max-width:600px;
+    box-shadow:0 6px 14px rgba(0,0,0,0.08);
+}
+.form-box label {
+    font-weight:600;
+    display:block;
+    margin-top:12px;
+}
+.form-box input {
+    width:100%;
+    padding:10px;
+    margin-top:6px;
+}
+button {
+    margin-top:20px;
+    padding:10px 24px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+</style>
+
+<div class="form-box">
+
+<form method="post">
+
+    <label>Step Test</label>
+    <input type="number" name="step_test" value="{{ record.step_test }}" required>
+
+    <label>Push Up</label>
+    <input type="number" name="push_up" value="{{ record.push_up }}" required>
+
+    <label>Sit Up</label>
+    <input type="number" name="sit_up" value="{{ record.sit_up }}" required>
+
+    <label>Sit & Reach (cm)</label>
+    <input type="number" step="0.1" name="sit_reach" value="{{ record.sit_reach }}" required>
+
+    <label>Test Date</label>
+    <input type="date" name="test_date" value="{{ record.test_date }}" required>
+
+    <button type="submit">Save Changes</button>
+
+</form>
+
+</div>
+
+{% endblock %}
